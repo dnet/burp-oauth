@@ -119,6 +119,8 @@ public class BurpHttpRequestWrapper implements HttpRequest {
 						valueStart = pos;
 					} else if (name.charAt(namePos) != b) {
 						state = 0;
+					} else {
+						namePos++;
 					}
 					break;
 				case 3:
@@ -132,9 +134,12 @@ public class BurpHttpRequestWrapper implements HttpRequest {
 		}
 		byte[] updated;
 		if (state == 5) {
-			// TODO overwrite valueStart ... valueEnd
-			updated = new byte[req.length - (valueEnd - valueStart - 2) + value.length()];
+			byte[] toInsert = value.getBytes();
+			updated = new byte[req.length - (valueEnd - valueStart - 2) + toInsert.length];
 			System.arraycopy(req, 0, updated, 0, valueStart + 2);
+			System.arraycopy(toInsert, 0, updated, valueStart + 2, toInsert.length);
+			System.arraycopy(req, valueEnd, updated, valueStart + 2 + toInsert.length,
+					req.length - valueEnd);
 		} else {
 			byte[] toInsert = String.format("%s: %s\r\n", name, value).getBytes();
 			updated = new byte[req.length + toInsert.length];

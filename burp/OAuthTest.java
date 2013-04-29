@@ -55,6 +55,19 @@ public class OAuthTest {
 		assertEquals(hr.getHeader(INSERT_HEADER_NAME), INSERT_HEADER_VALUE);
 	}
 
+	private final static String UPDATE_HEADER_NAME = "Host";
+	private final static String UPDATE_HEADER_OLD = "silentsignal.hu";
+	private final static String UPDATE_HEADER_VALUE = "silentsignal.eu";
+
+	@Test
+	public void testUpdateHeader() throws IOException {
+		HttpRequest hr = reqWrapForTestInput(1);
+		assertEquals(hr.getHeader(UPDATE_HEADER_NAME), UPDATE_HEADER_OLD);
+		hr.setHeader(UPDATE_HEADER_NAME, UPDATE_HEADER_VALUE);
+		assertEquals(hr.getHeader(UPDATE_HEADER_NAME), UPDATE_HEADER_VALUE);
+		assertEquals(hr.getHeader("Connection"), "Keep-Alive"); // next one
+	}
+
 	@Ignore
 	public static HttpRequest reqWrapForTestInput(int num) throws IOException {
 		RandomAccessFile f = new RandomAccessFile(String.format("test-inputs/%d.txt", num), "r");
