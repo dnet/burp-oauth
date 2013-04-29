@@ -3,7 +3,8 @@ API=burp_extender_api.zip
 SIGNPOST=signpost-core-1.2.1.2.jar
 JAR=burp-oauth.jar
 JUNIT=junit-4.11.jar:hamcrest-core-1.3.jar
-CLASSPATH=$(SIGNPOST):$(JUNIT):.
+COMCOD=commons-codec-1.8.jar
+CLASSPATH=$(SIGNPOST):$(JUNIT):$(COMCOD):.
 CLASSES=$(shell find . -name '*.java' | grep -v '/I[A-Z][^/]*\.java' | sed s/java/class/)
 
 $(JAR): $(CLASSES)
