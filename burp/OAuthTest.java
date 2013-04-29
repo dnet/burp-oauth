@@ -44,6 +44,17 @@ public class OAuthTest {
 		assertEquals(hr.getHeader("Host"), "weirdport.foo.bar:8081");
 	}
 
+	private final static String INSERT_HEADER_NAME = "Inserted";
+	private final static String INSERT_HEADER_VALUE = "foo bar";
+
+	@Test
+	public void testInsertHeader() throws IOException {
+		HttpRequest hr = reqWrapForTestInput(1);
+		assertEquals(hr.getHeader(INSERT_HEADER_NAME), null);
+		hr.setHeader(INSERT_HEADER_NAME, INSERT_HEADER_VALUE);
+		assertEquals(hr.getHeader(INSERT_HEADER_NAME), INSERT_HEADER_VALUE);
+	}
+
 	@Ignore
 	public static HttpRequest reqWrapForTestInput(int num) throws IOException {
 		RandomAccessFile f = new RandomAccessFile(String.format("test-inputs/%d.txt", num), "r");

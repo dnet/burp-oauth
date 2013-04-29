@@ -136,8 +136,14 @@ public class BurpHttpRequestWrapper implements HttpRequest {
 			updated = new byte[req.length - (valueEnd - valueStart - 2) + value.length()];
 			System.arraycopy(req, 0, updated, 0, valueStart + 2);
 		} else {
-			// TODO insert at valueStart
+			byte[] toInsert = String.format("%s: %s\r\n", name, value).getBytes();
+			updated = new byte[req.length + toInsert.length];
+			System.arraycopy(req, 0, updated, 0, valueStart);
+			System.arraycopy(toInsert, 0, updated, valueStart, toInsert.length);
+			System.arraycopy(req, valueStart, updated, valueStart + toInsert.length,
+					req.length - valueStart);
 		}
+		request.setRequest(updated);
 	}
 
 	public InputStream getMessagePayload() throws IOException {
