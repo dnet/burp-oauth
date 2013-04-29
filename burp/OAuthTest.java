@@ -68,17 +68,26 @@ public class OAuthTest {
 		assertEquals(hr.getHeader("Connection"), "Keep-Alive"); // next one
 	}
 
+	@Test
+	public void testGetRequestUrl() throws IOException {
+		HttpRequest hr = reqWrapForTestInput(1);
+		assertEquals(hr.getRequestUrl(), "http://silentsignal.hu:1337/foo/bar");
+	}
+
 	@Ignore
 	public static HttpRequest reqWrapForTestInput(int num) throws IOException {
 		RandomAccessFile f = new RandomAccessFile(String.format("test-inputs/%d.txt", num), "r");
 		final byte[] req = new byte[(int)f.length()];
 		f.read(req);
 		IHttpRequestResponse request = new MockRequest(req);
-		return new BurpHttpRequestWrapper(request);
+		HttpRequest reqWrap = new BurpHttpRequestWrapper(request);
+		request.setHttpService(new MockService(reqWrap.getHeader("Host")));
+		return reqWrap;
 	}
 
 	private static class MockRequest implements IHttpRequestResponse {
 		private byte[] request;
+		private IHttpService httpService = null;
 
 		public MockRequest(byte[] request) {
 			this.request = request;
@@ -86,13 +95,25 @@ public class OAuthTest {
 
 		public String getComment()           { return null; }
 		public String getHighlight()         { return null; }
-		public IHttpService getHttpService() { return null; }
+		public IHttpService getHttpService() { return httpService; }
 		public byte[] getRequest()           { return request; }
 		public byte[] getResponse()          { return null; }
 		public void setComment(String comment) {}
 		public void setHighlight(String color) {}
-		public void setHttpService(IHttpService httpService) {}
+		public void setHttpService(IHttpService httpService) { this.httpService = httpService; }
 		public void setRequest(byte[] message) { this.request = message; }
 		public void setResponse(byte[] message) {}
+	}
+
+	private static class MockService implements IHttpService {
+		private final String host;
+
+		public MockService(String host) {
+			this.host = host;
+		}
+
+		public String getHost() { return host; }
+		public int getPort() { return 1337; }
+		public String getProtocol() { return "http"; }
 	}
 }
