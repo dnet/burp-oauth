@@ -1,5 +1,10 @@
 package burp;
 
+import oauth.signpost.basic.DefaultOAuthConsumer;
+import oauth.signpost.http.HttpRequest;
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.exception.OAuthException;
+
 public class BurpExtender implements IBurpExtender, IHttpListener
 {
 	@Override
@@ -14,6 +19,17 @@ public class BurpExtender implements IBurpExtender, IHttpListener
 	{
 		if (messageIsRequest)
 		{
+			HttpRequest req = new BurpHttpRequestWrapper(messageInfo);
+			OAuthConsumer consumer = new DefaultOAuthConsumer(
+					OAuthConfig.getConsumerKey(),
+					OAuthConfig.getConsumerSecret());
+			consumer.setTokenWithSecret(OAuthConfig.getToken(),
+					OAuthConfig.getTokenSecret());
+			try {
+				consumer.sign(req);
+			} catch (OAuthException oae) {
+				oae.printStackTrace();
+			}
 		}
 	}
 }
