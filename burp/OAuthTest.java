@@ -9,7 +9,9 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import oauth.signpost.basic.DefaultOAuthConsumer;
 import oauth.signpost.http.HttpRequest;
+import oauth.signpost.OAuthConsumer;
 
 @RunWith(JUnit4.class)
 public class OAuthTest {
@@ -72,6 +74,13 @@ public class OAuthTest {
 	public void testGetRequestUrl() throws IOException {
 		HttpRequest hr = reqWrapForTestInput(1);
 		assertEquals(hr.getRequestUrl(), "http://silentsignal.hu:1337/foo/bar");
+	}
+
+	@Test
+	public void testSignature() throws Exception {
+		HttpRequest hr = reqWrapForTestInput(1);
+		OAuthConsumer consumer = new DefaultOAuthConsumer("1234", "5678");
+		consumer.sign(hr);
 	}
 
 	@Ignore
