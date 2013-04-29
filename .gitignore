@@ -35,3 +35,4 @@ src/burp/ISessionHandlingAction.java
 src/burp/ITab.java
 src/burp/ITempFile.java
 src/burp/ITextEditor.java
+src/burp/OAuthConfig.java
