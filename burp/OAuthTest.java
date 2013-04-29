@@ -80,6 +80,7 @@ public class OAuthTest {
 	public void testSignature() throws Exception {
 		HttpRequest hr = reqWrapForTestInput(1);
 		OAuthConsumer consumer = new DefaultOAuthConsumer("1234", "5678");
+		consumer.setTokenWithSecret("9ABC", "DEF0");
 		consumer.sign(hr);
 	}
 
