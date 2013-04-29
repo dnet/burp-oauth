@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="adsdroid" default="plugin">
+	<target name="plugin" depends="classes">
+		<zip destfile="burp-oauth.jar">
+			<zipgroupfileset dir="lib" includes="signpost-core-*.jar"/>
+			<zipgroupfileset dir="lib" includes="commons-codec-*.jar"/>
+			<fileset dir="build">
+				<include name="burp/BurpExtender.class"/>
+				<include name="burp/BurpHttpRequestWrapper.class"/>
+			</fileset>
+		</zip>
+	</target>
+	<target name="test" depends="classes">
+		<java classname="org.junit.runner.JUnitCore" classpath="build">
+			<arg value="burp.OAuthTest"/>
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	<target name="classes">
+		<mkdir dir="build"/>
+		<javac srcdir="src" destdir="build" includeantruntime="false">
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	<target name="clean">
+		<delete dir="build"/>
+		<delete file="burp-oauth.jar"/>
+	</target>
+</project>
