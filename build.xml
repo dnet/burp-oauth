@@ -7,6 +7,7 @@
 			<fileset dir="build">
 				<include name="burp/BurpExtender.class"/>
 				<include name="burp/BurpHttpRequestWrapper.class"/>
+				<include name="burp/OAuthConfig.class"/>
 			</fileset>
 		</zip>
 	</target>
