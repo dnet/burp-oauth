@@ -21,7 +21,7 @@ Dependencies
 License
 -------
 
-The whole project is available under MIT license.
+The whole project is available under MIT license, see `LICENSE.txt`.
 
 Known limitations
 -----------------
