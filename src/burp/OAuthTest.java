@@ -90,7 +90,7 @@ public class OAuthTest {
 		final byte[] req = new byte[(int)f.length()];
 		f.read(req);
 		IHttpRequestResponse request = new MockRequest(req);
-		HttpRequest reqWrap = new BurpHttpRequestWrapper(request);
+		HttpRequest reqWrap = new BurpHttpRequestWrapper(request, null);
 		request.setHttpService(new MockService(reqWrap.getHeader("Host")));
 		return reqWrap;
 	}
