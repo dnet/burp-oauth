@@ -7,44 +7,23 @@ import java.io.*;
 public class BurpHttpRequestWrapper implements HttpRequest {
 
 	private IHttpRequestResponse request;
+	private IExtensionHelpers helpers;
 
-	public BurpHttpRequestWrapper(IHttpRequestResponse request) {
+	public BurpHttpRequestWrapper(IHttpRequestResponse request, IExtensionHelpers helpers) {
 		this.request = request;
+		this.helpers = helpers;
+	}
+
+	public IRequestInfo getRequestInfo() {
+		return helpers.analyzeRequest(request);
 	}
 
 	public String getMethod() {
-		StringBuilder method = new StringBuilder();
-		for (byte b : request.getRequest()) {
-			if (b == ' ') {
-				break;
-			} else {
-				method.append((char)b);
-			}
-		}
-		return method.toString();
+		return getRequestInfo().getMethod();
 	}
 
 	public String getRequestUrl() {
-		IHttpService hs = request.getHttpService();
-		StringBuilder url = new StringBuilder();
-		url.append(hs.getProtocol());
-		url.append("://");
-		url.append(hs.getHost());
-		url.append(":");
-		url.append(hs.getPort());
-		boolean capture = false;
-		for (byte b : request.getRequest()) {
-			if (b == ' ') {
-				if (capture) {
-					break;
-				} else {
-					capture = true;
-				}
-			} else if (capture) {
-				url.append((char)b);
-			}
-		}
-		return url.toString();
+		return getRequestInfo().getUrl().toString();
 	}
 
 	public String getContentType() {
@@ -57,39 +36,9 @@ public class BurpHttpRequestWrapper implements HttpRequest {
 
 	public Map<String, String> getAllHeaders() {
 		Map<String, String> retval = new HashMap<String, String>();
-		byte state = 0; // 0 - first line, 1 - wait for \n, 2 - key, 3 - value
-		StringBuilder key = null, value = null;
-		byteloop:
-		for (byte b : request.getRequest()) {
-			switch (state) {
-				case 0:
-					if (b == '\r') state = 1;
-					break;
-				case 1:
-					if (b == '\n') {
-						state = 2;
-						key = new StringBuilder();
-					}
-					break;
-				case 2:
-					if (b == ':') {
-						state = 3;
-						value = new StringBuilder();
-					} else if (b == '\r' || b == '\n') {
-						break byteloop;
-					} else {
-						key.append((char)b);
-					}
-					break;
-				case 3:
-					if (b == '\r') {
-						state = 1;
-						retval.put(key.toString(), value.substring(1)); // starts with a space
-					} else {
-						value.append((char)b);
-					}
-					break;
-			}
+		for (String header : getRequestInfo().getHeaders()) {
+			String[] parts = header.split(":", 2);
+			retval.put(parts[0], parts[1]);
 		}
 		return retval;
 	}

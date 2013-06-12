@@ -7,11 +7,14 @@ import oauth.signpost.exception.OAuthException;
 
 public class BurpExtender implements IBurpExtender, IHttpListener
 {
+	private IExtensionHelpers helpers;
+
 	@Override
 	public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks)
 	{
 		callbacks.setExtensionName("OAuth");
 		callbacks.registerHttpListener(this);
+		helpers = callbacks.getHelpers();
 	}
 
 	@Override
@@ -19,7 +22,7 @@ public class BurpExtender implements IBurpExtender, IHttpListener
 	{
 		if (messageIsRequest)
 		{
-			HttpRequest req = new BurpHttpRequestWrapper(messageInfo);
+			HttpRequest req = new BurpHttpRequestWrapper(messageInfo, helpers);
 			OAuthConsumer consumer = new DefaultOAuthConsumer(
 					OAuthConfig.getConsumerKey(),
 					OAuthConfig.getConsumerSecret());
