@@ -8,7 +8,7 @@ import java.io.*;
 public class BurpHttpRequestWrapper implements HttpRequest {
 
 	private IHttpRequestResponse request;
-	private Charset UTF_8 = Charset.forName("UTF-8");
+	private static final Charset UTF_8 = Charset.forName("UTF-8");
 
 	public BurpHttpRequestWrapper(IHttpRequestResponse request) {
 		this.request = request;
