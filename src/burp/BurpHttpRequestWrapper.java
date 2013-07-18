@@ -1,12 +1,14 @@
 package burp;
 
 import oauth.signpost.http.HttpRequest;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.io.*;
 
 public class BurpHttpRequestWrapper implements HttpRequest {
 
 	private IHttpRequestResponse request;
+	private Charset UTF_8 = Charset.forName("UTF-8");
 
 	public BurpHttpRequestWrapper(IHttpRequestResponse request) {
 		this.request = request;
@@ -134,14 +136,14 @@ public class BurpHttpRequestWrapper implements HttpRequest {
 		}
 		byte[] updated;
 		if (state == 5) {
-			byte[] toInsert = value.getBytes();
+			byte[] toInsert = value.getBytes(UTF_8);
 			updated = new byte[req.length - (valueEnd - valueStart - 2) + toInsert.length];
 			System.arraycopy(req, 0, updated, 0, valueStart + 2);
 			System.arraycopy(toInsert, 0, updated, valueStart + 2, toInsert.length);
 			System.arraycopy(req, valueEnd, updated, valueStart + 2 + toInsert.length,
 					req.length - valueEnd);
 		} else {
-			byte[] toInsert = String.format("%s: %s\r\n", name, value).getBytes();
+			byte[] toInsert = String.format("%s: %s\r\n", name, value).getBytes(UTF_8);
 			updated = new byte[req.length + toInsert.length];
 			System.arraycopy(req, 0, updated, 0, valueStart);
 			System.arraycopy(toInsert, 0, updated, valueStart, toInsert.length);
