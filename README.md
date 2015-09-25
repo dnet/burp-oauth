@@ -5,7 +5,7 @@ Building
 --------
 
  - Install the dependencies, in case of libraries, put the JARs into `lib`
- - Download the [Burp Extender API][1] and unpack it into `src``
+ - Download the [Burp Extender API][1] and unpack it into `src`
  - Copy `OAuthConfig.sample.java` to `src/OAuthConfig.java` and modify it to your needs
  - Execute `ant`, and you'll have the plugin ready in `burp-oauth.jar`
 
