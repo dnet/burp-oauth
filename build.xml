@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="adsdroid" default="plugin">
+<project name="burp-oauth" default="plugin">
 	<target name="plugin" depends="classes">
 		<zip destfile="burp-oauth.jar">
 			<zipgroupfileset dir="lib" includes="signpost-core-*.jar"/>
