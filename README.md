@@ -14,7 +14,7 @@ Dependencies
 
  - JDK 1.7+ (tested on OpenJDK `1.7.0_85`, Debian/Ubuntu package: `openjdk-7-jdk`)
  - Apache ANT (Debian/Ubuntu package: `ant`)
- - `oauth-signpost` http://code.google.com/p/oauth-signpost/
+ - `oauth-signpost` https://github.com/mttkay/signpost
  - Apache Commons Codecs: http://commons.apache.org/codec/
  - JUnit 4+ (only required for testing)
 
