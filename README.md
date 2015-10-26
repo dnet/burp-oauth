@@ -5,7 +5,7 @@ Building
 --------
 
  - Install the dependencies, in case of libraries, put the JARs into `lib`
- - Copy `OAuthConfig.sample.java` to `src/OAuthConfig.java` and modify it to your needs
+ - Copy `OAuthConfig.sample.java` to `src/burp/OAuthConfig.java` and modify it to your needs
  - Execute `ant`, and you'll have the plugin ready in `burp-oauth.jar`
 
 Dependencies
