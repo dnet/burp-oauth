@@ -1,6 +1,8 @@
 OAuth plugin for Burp Suite
 ===========================
 
+[![Build Status](https://travis-ci.org/dnet/burp-oauth.svg?branch=master)](https://travis-ci.org/dnet/burp-oauth)
+
 Building
 --------
 
