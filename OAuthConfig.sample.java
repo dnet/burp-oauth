@@ -1,6 +1,8 @@
 package burp;
 
 public class OAuthConfig {
+	public static final boolean scopeOnly = false; // true ignores out of scope requests
+
 	public static String getConsumerKey() {
 		return "ConsumerKey";
 	}
