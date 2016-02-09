@@ -84,6 +84,20 @@ public class OAuthTest {
 		consumer.sign(hr);
 	}
 
+	private final static String SOAP_BODY = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SOAP-ENV:Envelope xmlns:ns0=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ns1=\"http://hu/xxxxxxxxx/ws\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><ns0:Body><ns1:yyyyyyyyyyyy><ns1:request/></ns1:yyyyyyyyyyyy></ns0:Body></SOAP-ENV:Envelope>\r\n";
+
+	@Test
+	public void testGetMessagePayload() throws IOException {
+		HttpRequest hr;
+		hr = reqWrapForTestInput(1);
+		assertEquals(0, hr.getMessagePayload().available());
+		hr = reqWrapForTestInput(2);
+		final InputStream is = hr.getMessagePayload();
+		final byte[] buf = new byte[is.available()];
+		assertEquals(buf.length, is.read(buf));
+		assertEquals(SOAP_BODY, new String(buf));
+	}
+
 	@Ignore
 	public static HttpRequest reqWrapForTestInput(int num) throws IOException {
 		RandomAccessFile f = new RandomAccessFile(String.format("test-inputs/%d.txt", num), "r");

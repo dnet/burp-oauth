@@ -154,6 +154,24 @@ public class BurpHttpRequestWrapper implements HttpRequest {
 	}
 
 	public InputStream getMessagePayload() throws IOException {
+		final byte[] buf = request.getRequest();
+		int newlines = 0;
+		for (int offset = 0; offset < buf.length; offset++) {
+			switch (newlines) {
+				case 0:
+				case 2:
+					newlines = (buf[offset] == (byte)0x0d) ? newlines + 1 : 0;
+					break;
+				case 3:
+					if (buf[offset] == (byte)0x0a) {
+						offset++;
+						return new ByteArrayInputStream(buf, offset, buf.length - offset);
+					}
+				case 1:
+					newlines = (buf[offset] == (byte)0x0a) ? newlines + 1 : 0;
+					break;
+			}
+		}
 		return null;
 	}
 
