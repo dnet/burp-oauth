@@ -28,5 +28,3 @@ Known limitations
 -----------------
 
  - Configuration has to be done at compile time using `OAuthConfig.java`
-
-  [1]: https://portswigger.net/burp/extender/api/burp_extender_api.zip
